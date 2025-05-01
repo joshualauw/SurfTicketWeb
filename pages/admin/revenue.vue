@@ -1,9 +1,11 @@
 <template>.</template>
 
 <script setup lang="ts">
+import { RouteKey } from "~/config/route";
+
 definePageMeta({
     layout: "admin",
     title: "Revenue",
-    name: "admin-revenue",
+    name: RouteKey.ADMIN_REVENUE,
 });
 </script>

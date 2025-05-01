@@ -5,7 +5,7 @@ import { RouteKey } from "~/config/route";
 
 definePageMeta({
     layout: "admin",
-    title: "Chat",
-    name: RouteKey.ADMIN_CHAT,
+    title: "Create Venue",
+    name: RouteKey.ADMIN_VENUE_CREATE,
 });
 </script>

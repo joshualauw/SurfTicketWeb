@@ -2,7 +2,7 @@
     <Sidebar>
         <SidebarHeader>
             <div class="flex w-full justify-center mt-4">
-                <img class="w-32 h-32 rounded-full bg-gray-200" />
+                <NuxtImg src="/SurfTicket.png" class="w-30 h-30 rounded-full bg-gray-200" />
             </div>
         </SidebarHeader>
         <SidebarContent class="pl-4">
@@ -10,12 +10,12 @@
                 <SidebarGroupLabel>Navigations</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenu>
-                        <SidebarMenuItem v-for="item in items" :key="item.title">
-                            <SidebarMenuButton asChild :isActive="item.active">
-                                <a :href="item.url" class="h-10" :style="{ 'font-size': '14px' }">
+                        <SidebarMenuItem v-for="item in items" :key="item.key">
+                            <SidebarMenuButton asChild :isActive="$route.meta.name == item.key">
+                                <NuxtLink :to="{ name: item.key }" class="h-10" :style="{ 'font-size': '14px' }">
                                     <component :is="item.icon" />
                                     <span class="ml-1">{{ item.title }}</span>
-                                </a>
+                                </NuxtLink>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -35,51 +35,43 @@ import {
     ChartNoAxesCombined,
     ScanBarcode,
 } from "lucide-vue-next";
-
-const route = useRoute();
+import { RouteKey } from "~/config/route";
 
 const items = [
     {
         title: "Dashboard",
-        url: "/admin",
         icon: LayoutDashboard,
-        active: route.meta.name == "admin-dashboard",
+        key: RouteKey.ADMIN_DASHBOARD,
     },
     {
         title: "Venue",
-        url: "/admin/venue",
         icon: Store,
-        active: route.meta.name == "admin-venue",
+        key: RouteKey.ADMIN_VENUE,
     },
     {
         title: "Tickets",
-        url: "/admin/ticket",
         icon: Ticket,
-        active: route.meta.name == "admin-ticket",
+        key: RouteKey.ADMIN_TICKET,
     },
     {
         title: "Revenue",
-        url: "/admin/revenue",
         icon: ChartNoAxesCombined,
-        active: route.meta.name == "admin-revenue",
+        key: RouteKey.ADMIN_REVENUE,
     },
     {
         title: "Scans",
-        url: "/admin/scan",
         icon: ScanBarcode,
-        active: route.meta.name == "admin-scan",
+        key: RouteKey.ADMIN_SCAN,
     },
     {
         title: "Chat",
-        url: "/admin/chat",
         icon: MessageCircleMore,
-        active: route.meta.name == "admin-chat",
+        key: RouteKey.ADMIN_CHAT,
     },
     {
         title: "Settings",
-        url: "/admin/setting",
         icon: Settings,
-        active: route.meta.name == "admin-setting",
+        key: RouteKey.ADMIN_SETTING,
     },
 ];
 </script>
