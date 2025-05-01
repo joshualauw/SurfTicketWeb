@@ -18,7 +18,7 @@ const { toggleSidebar } = useSidebar();
         data-slot="sidebar-trigger"
         variant="ghost"
         size="icon"
-        :class="cn('h-6 w-6 transform translate-y-3 translate-x-2', props.class)"
+        :class="cn('h-8 w-8', props.class)"
         @click="toggleSidebar"
     >
         <MenuIcon />

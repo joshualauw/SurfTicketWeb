@@ -12,7 +12,7 @@
                     <SidebarMenu>
                         <SidebarMenuItem v-for="item in items" :key="item.title">
                             <SidebarMenuButton asChild :isActive="item.active">
-                                <a :href="item.url" class="h-12" :style="{ 'font-size': '16px' }">
+                                <a :href="item.url" class="h-10" :style="{ 'font-size': '14px' }">
                                     <component :is="item.icon" />
                                     <span class="ml-1">{{ item.title }}</span>
                                 </a>
@@ -35,20 +35,9 @@ import {
     ChartNoAxesCombined,
     ScanBarcode,
 } from "lucide-vue-next";
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar";
 
 const route = useRoute();
 
-// Menu items.
 const items = [
     {
         title: "Dashboard",
