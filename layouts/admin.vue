@@ -1,32 +1,34 @@
 <template>
-    <SidebarProvider>
-        <AdminSidebar />
-        <main class="w-screen">
-            <AdminNavbar />
-            <div class="p-2 md:p-3 xl:p-4 bg-slate-100 min-h-[88vh] h-auto">
-                <h1 class="text-lg md:text-2xl font-bold mb-2 md:mb-3 xl:mb-4">{{ $route.meta.title }}</h1>
-                <Breadcrumb v-if="$route.meta.name != RouteKey.ADMIN_DASHBOARD">
-                    <BreadcrumbList>
-                        <BreadcrumbItem>
-                            <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD }">Dashboard</NuxtLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <template v-for="crumb in breadcrumbs">
+    <NuxtLayout name="default">
+        <SidebarProvider>
+            <AdminSidebar />
+            <main class="w-screen">
+                <AdminNavbar />
+                <div class="p-2 md:p-3 xl:p-4 bg-slate-100 min-h-[88vh] h-auto">
+                    <h1 class="text-lg md:text-2xl font-bold mb-2 md:mb-3 xl:mb-4">{{ $route.meta.title }}</h1>
+                    <Breadcrumb v-if="$route.meta.name != RouteKey.ADMIN_DASHBOARD">
+                        <BreadcrumbList>
                             <BreadcrumbItem>
-                                <NuxtLink :to="crumb.path">{{ crumb.name }}</NuxtLink>
+                                <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD }">Dashboard</NuxtLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
-                        </template>
-                        <BreadcrumbItem>
-                            <BreadcrumbPage>{{ $route.meta.title }}</BreadcrumbPage>
-                        </BreadcrumbItem>
-                    </BreadcrumbList>
-                </Breadcrumb>
-                <slot />
-            </div>
-            <p class="text-center text-gray-500 text-xs m-2">@2025 - Joshua W</p>
-        </main>
-    </SidebarProvider>
+                            <template v-for="crumb in breadcrumbs">
+                                <BreadcrumbItem>
+                                    <NuxtLink :to="crumb.path">{{ crumb.name }}</NuxtLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                            </template>
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>{{ $route.meta.title }}</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
+                    <slot />
+                </div>
+                <p class="text-center text-gray-500 text-xs m-2">@2025 - Joshua W</p>
+            </main>
+        </SidebarProvider>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +36,6 @@ import { RouteKey } from "~/config/route";
 
 const route = useRoute();
 const breadcrumbs = computed(() => generateBreadcrumbs(route.path));
-console.log(breadcrumbs.value);
 
 function generateBreadcrumbs(url: string, skipStart = 1, skipEnd = 1): { path: string; name: string }[] {
     const originalSegments = url.split("/").filter(Boolean);

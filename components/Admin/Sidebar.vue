@@ -2,7 +2,7 @@
     <Sidebar>
         <SidebarHeader>
             <div class="flex w-full justify-center mt-4">
-                <NuxtImg src="/SurfTicket.png" class="w-30 h-30 rounded-full bg-gray-200" />
+                <NuxtImg src="/images/SurfTicket.png" class="w-30 h-30 rounded-full bg-gray-200" />
             </div>
         </SidebarHeader>
         <SidebarContent class="pl-4">
