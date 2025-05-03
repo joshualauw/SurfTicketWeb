@@ -9,4 +9,5 @@ export enum RouteKey {
     ADMIN_SETTING = "admin-setting",
     LOGIN = "login",
     REGISTER = "register",
+    HOME = "home",
 }

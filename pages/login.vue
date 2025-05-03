@@ -58,16 +58,21 @@ const formSchema = toTypedSchema(
 const { handleSubmit } = useForm({
     validationSchema: formSchema,
 });
+const { setLoggedUser } = useAuthStore();
 const { login } = useAuthApi();
-const { loading, execute, errors, error, success, message } = useClientApi(login);
+const { loading, execute, errors, error, success, message, data } = useApi(login);
 
 const onSubmit = handleSubmit(async (values) => {
     await execute(values);
 
-    if (success.value) {
+    if (success.value && data.value) {
         toast.success(message, { class: "toast-success" });
-        navigateTo({ name: RouteKey.ADMIN_DASHBOARD });
+        setLoggedUser(data.value.user);
+
+        await nextTick();
+        navigateTo({ name: RouteKey.HOME });
     } else {
+        console.log(error.value);
         toast.error(message, { class: "toast-error" });
     }
 });
