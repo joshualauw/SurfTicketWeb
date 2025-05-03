@@ -66,14 +66,14 @@ const onSubmit = handleSubmit(async (values) => {
     await execute(values);
 
     if (success.value && data.value) {
-        toast.success(message, { class: "toast-success" });
+        toast.success(message.value, { class: "toast-success" });
         setLoggedUser(data.value.user);
 
         await nextTick();
         navigateTo({ name: RouteKey.HOME });
     } else {
         console.log(error.value);
-        toast.error(message, { class: "toast-error" });
+        toast.error(message.value, { class: "toast-error" });
     }
 });
 </script>

@@ -21,9 +21,9 @@ export default function <Args extends any[], T>(fn: (...args: Args) => Promise<A
             message.value = result.message;
         } catch (e: unknown) {
             const err = e as { data: ApiResponse<T> };
-            errors.value.push(...err.data.errors);
-            error.value = err.data.error;
-            message.value = err.data.message;
+            errors.value.push(...(err.data.errors || []));
+            error.value = err.data.error || null;
+            message.value = err.data.message || "";
             success.value = false;
         } finally {
             loading.value = false;
