@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouteKey } from "~/config/route";
+import { RouteKey } from "~/const/route";
 
 definePageMeta({
     layout: "admin",

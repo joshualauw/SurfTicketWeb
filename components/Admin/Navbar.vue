@@ -1,7 +1,7 @@
 <template>
     <div class="w-full border-b border-gray-300 py-2 px-2 flex items-center justify-between">
         <div><SidebarTrigger /></div>
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center">
             <DropdownMenu>
                 <DropdownMenuTrigger as-child class="relative">
                     <Button variant="ghost">
@@ -29,18 +29,42 @@
                             </div>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem class="flex justify-between items-center">
                             <span class="text-center font-semibold">View All Activity</span>
+                            <ArrowRightIcon />
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <AdminNavbarProfile />
+            <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                    <Button variant="ghost">
+                        <Avatar>
+                            <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                        <p class="text-sm text-gray-700 hidden md:block">joshualauw1@gmail.com</p>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent class="w-24 md:w-48">
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            <span>Settings</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <NuxtLink :to="{ name: RouteKey.HOME }" class="text-destructive flex items-center">
+                                <LogOutIcon class="mr-2 text-destructive" />
+                                Back to Home
+                            </NuxtLink>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { BellIcon } from "lucide-vue-next";
+import { ArrowRightIcon, BellIcon, LogOutIcon } from "lucide-vue-next";
+import { RouteKey } from "~/const/route";
 </script>

@@ -1,5 +1,7 @@
 <template>
-    <slot />
+    <main class="w-screen h-screen bg-zinc-50">
+        <slot />
+    </main>
     <ClientOnly>
         <Toaster position="top-right" />
     </ClientOnly>

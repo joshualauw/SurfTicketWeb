@@ -3,7 +3,7 @@
         <div class="w-screen h-screen flex-center bg-image p-4">
             <Card class="w-full md:max-w-[500px]">
                 <CardHeader class="flex-center flex-col">
-                    <NuxtImg src="/images/SurfTicket.png" class="w-32 h-32" />
+                    <NuxtImg src="/images/logo.png" class="w-32 h-32" />
                     <CardTitle class="text-center text-lg">{{ $route.meta.title }}</CardTitle>
                 </CardHeader>
                 <CardContent>

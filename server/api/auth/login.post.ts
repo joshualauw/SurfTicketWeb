@@ -1,4 +1,4 @@
-import { BASE_URL } from "~/config/api";
+import { BASE_URL } from "~/const/api";
 import { ApiResponse } from "~/types/api/ApiResponse";
 import { LoginData } from "~/types/api/auth/LoginData";
 import { LoginDto } from "~/types/api/auth/LoginDto";

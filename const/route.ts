@@ -10,4 +10,5 @@ export enum RouteKey {
     LOGIN = "login",
     REGISTER = "register",
     HOME = "home",
+    SETTING = "setting",
 }

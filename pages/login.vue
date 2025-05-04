@@ -25,17 +25,11 @@
             <Loader2Icon v-if="loading" class="w-4 h-4 mr-2 animate-spin" />
             Submit
         </Button>
-        <Alert v-if="error" variant="destructive">
-            <AlertTitle>{{ error.errorMessage }}</AlertTitle>
-            <AlertDescription v-for="err in errors">
-                {{ err.message }}
-            </AlertDescription>
-        </Alert>
     </form>
 </template>
 
 <script setup lang="ts">
-import { RouteKey } from "~/config/route";
+import { RouteKey } from "~/const/route";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { Loader2Icon } from "lucide-vue-next";
@@ -60,7 +54,7 @@ const { handleSubmit } = useForm({
 });
 const { setLoggedUser } = useAuthStore();
 const { login } = useAuthApi();
-const { loading, execute, errors, error, success, message, data } = useApi(login);
+const { loading, execute, error, success, message, data } = useApi(login);
 
 const onSubmit = handleSubmit(async (values) => {
     await execute(values);
