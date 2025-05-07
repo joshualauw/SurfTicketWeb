@@ -1,5 +1,5 @@
 <template>
-    <form @submit="onSubmit" class="space-y-6">
+    <form @submit="onSubmit" class="space-y-5">
         <FormField v-slot="{ componentField }" name="email">
             <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -12,19 +12,28 @@
         <FormField v-slot="{ componentField }" name="password">
             <FormItem>
                 <FormLabel>Password</FormLabel>
-                <FormControl>
-                    <Input type="password" placeholder="*****" v-bind="componentField" />
-                </FormControl>
+                <SurfPassword :componentField="componentField" />
                 <FormMessage />
             </FormItem>
         </FormField>
-        <p class="text-gray-500 text-sm text-center">
-            <NuxtLink :to="{ name: RouteKey.REGISTER }"> doesn't have an account? register </NuxtLink>
-        </p>
-        <Button :disabled="loading" type="submit" class="w-full">
-            <Loader2Icon v-if="loading" class="w-4 h-4 mr-2 animate-spin" />
-            Submit
-        </Button>
+        <div class="flex items-center justify-between">
+            <div>
+                <Checkbox id="remember-me" class="cursor-pointer" />
+                <label for="remember-me" class="ml-2 text-sm cursor-pointer">Remember me</label>
+            </div>
+            <Button variant="link" type="button">
+                <NuxtLink :to="{ name: RouteKey.AUTH_FORGOT_PASSWORD }">Forgot Password?</NuxtLink>
+            </Button>
+        </div>
+        <div>
+            <Button :disabled="loading" type="submit" class="w-full">
+                <Loader2Icon v-if="loading" class="w-4 h-4 mr-2 animate-spin" />
+                Submit
+            </Button>
+            <Button variant="link" type="button" class="block mx-auto mt-2">
+                <NuxtLink :to="{ name: RouteKey.AUTH_REGISTER }"> doesn't have an account? </NuxtLink>
+            </Button>
+        </div>
     </form>
 </template>
 
@@ -39,13 +48,13 @@ import * as z from "zod";
 definePageMeta({
     layout: "auth",
     title: "Sign In",
-    name: RouteKey.LOGIN,
+    name: RouteKey.AUTH_LOGIN,
 });
 
 const formSchema = toTypedSchema(
     z.object({
         email: z.string().email(),
-        password: z.string().min(3).max(12),
+        password: z.string().min(6).max(12),
     })
 );
 
@@ -64,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
         setLoggedUser(data.value.user);
 
         await nextTick();
-        navigateTo({ name: RouteKey.HOME });
+        navigateTo({ name: RouteKey.AUTH_CONFIRM_EMAIL });
     } else {
         console.log(error.value);
         toast.error(message.value, { class: "toast-error" });

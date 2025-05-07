@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary p-4 text-gray-50 flex justify-between items-center space-x-3">
+    <div class="bg-primary px-5 py-3 text-gray-50 flex justify-between items-center space-x-3">
         <NuxtLink :to="{ name: RouteKey.HOME }" class="flex items-center space-x-3">
             <NuxtImg src="/images/logo.png" class="rounded-full w-10 h-10" />
             <h1 class="text-xl font-extrabold">SurfTicket</h1>
@@ -59,7 +59,10 @@
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <NuxtLink :to="{ name: RouteKey.LOGIN }" class="text-destructive flex items-center w-full">
+                            <NuxtLink
+                                :to="{ name: RouteKey.AUTH_LOGIN }"
+                                class="text-destructive flex items-center w-full"
+                            >
                                 <LogOutIcon class="mr-2 text-destructive" />
                                 Log Out
                             </NuxtLink>

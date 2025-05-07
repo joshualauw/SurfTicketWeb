@@ -1,5 +1,5 @@
 <template>
-    <main class="w-screen h-screen bg-zinc-50">
+    <main class="w-screen h-screen bg-white">
         <slot />
     </main>
     <ClientOnly>

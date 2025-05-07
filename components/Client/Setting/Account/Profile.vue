@@ -1,7 +1,7 @@
 <template>
     <div id="profile" class="flex flex-col">
         <div class="flex items-center">
-            <Avatar class="w-20 h-20">
+            <Avatar class="w-20 h-20 border">
                 <AvatarImage src="/images/logo.png" />
                 <AvatarFallback class="text-xl">JW</AvatarFallback>
             </Avatar>
@@ -10,7 +10,7 @@
                 <small>Pro plan</small>
             </div>
         </div>
-        <form @submit="onSubmit" class="w-[40%] mt-8 space-y-4">
+        <form @submit="onSubmit" class="w-full lg:w-[40%] mt-8 space-y-4">
             <FormField v-slot="{ componentField }" name="firstName">
                 <FormItem>
                     <FormLabel class="mb-2">Firstname</FormLabel>
@@ -35,13 +35,16 @@
                     <FormControl>
                         <Input type="text" v-bind="componentField" :disabled="!isEditing" />
                     </FormControl>
+                    <small v-if="isEditing" class="text-destructive">
+                        *You must confirm email again after changing
+                    </small>
                     <FormMessage />
                 </FormItem>
             </FormField>
             <Button @click="isEditing = !isEditing" variant="ghost">
                 {{ isEditing ? "Cancel" : "Edit" }}
             </Button>
-            <Button v-show="isEditing" type="submit" class="ml-2">Save</Button>
+            <Button v-show="isEditing" variant="secondary" type="submit" class="ml-2">Save</Button>
         </form>
     </div>
 </template>

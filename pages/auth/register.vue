@@ -1,33 +1,34 @@
 <template>
-    <form @submit="onSubmit" class="space-y-6">
+    <form @submit="onSubmit" class="space-y-5">
         <FormField v-slot="{ componentField }" name="username">
             <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                     <Input type="email" placeholder="your_email@mail.com" v-bind="componentField" />
                 </FormControl>
+                <FormMessage />
             </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="password">
             <FormItem>
                 <FormLabel>Password</FormLabel>
-                <FormControl>
-                    <Input type="password" placeholder="*****" v-bind="componentField" />
-                </FormControl>
+                <SurfPassword :componentField="componentField" />
+                <FormMessage />
             </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="password_confirmation">
             <FormItem>
                 <FormLabel>Password Confirmation</FormLabel>
-                <FormControl>
-                    <Input type="password_confirmation" placeholder="*****" v-bind="componentField" />
-                </FormControl>
+                <SurfPassword :componentField="componentField" />
+                <FormMessage />
             </FormItem>
         </FormField>
-        <p class="text-gray-500 text-sm text-center">
-            <NuxtLink :to="{ name: RouteKey.LOGIN }"> already have an account? login </NuxtLink>
-        </p>
-        <Button type="submit" class="w-full">Submit</Button>
+        <div>
+            <Button type="submit" class="w-full"> Submit </Button>
+            <Button variant="link" class="block mx-auto mt-2">
+                <NuxtLink :to="{ name: RouteKey.AUTH_LOGIN }"> Already have an account? </NuxtLink>
+            </Button>
+        </div>
     </form>
 </template>
 
@@ -38,7 +39,7 @@ import { useForm } from "vee-validate";
 definePageMeta({
     layout: "auth",
     title: "Sign Up",
-    name: RouteKey.REGISTER,
+    name: RouteKey.AUTH_REGISTER,
 });
 
 const form = useForm();

@@ -1,14 +1,14 @@
 <template>
-    <div class="grid grid-cols-4 gap-6 border rounded-lg h-[82vh]">
-        <div class="hidden lg:block lg:col-span-1 h-[82vh] bg-accent rounded-r-none py-4 px-8">
-            <h2 class="font-bold mb-4">Navigation</h2>
+    <div class="grid grid-cols-4 border-2 rounded-lg h-[84vh] bg-zinc-50">
+        <div class="hidden lg:block lg:col-span-1 h-[84vh] bg-primary rounded-r-none py-4 px-8 text-gray-200">
+            <h2 class="font-bold my-6">Navigation</h2>
             <div class="space-y-2">
-                <Button v-for="nav in navs" variant="muted" class="rounded-full w-full">
+                <Button v-for="nav in navs" variant="ghost" class="rounded-full w-full">
                     <a :href="nav.target" class="w-full text-left">{{ nav.name }}</a>
                 </Button>
             </div>
         </div>
-        <div class="col-span-4 lg:col-span-3">
+        <div class="col-span-4 lg:col-span-3 px-6">
             <Tabs default-value="account" class="mt-4">
                 <TabsList class="grid w-full grid-cols-3">
                     <TabsTrigger @click="setSettingAccountNav" value="account">Account</TabsTrigger>
@@ -17,7 +17,11 @@
                 </TabsList>
                 <TabsContent value="account">
                     <ClientSettingAccount />
+                </TabsContent>
+                <TabsContent value="merchant">
                     <ClientSettingMerchant />
+                </TabsContent>
+                <TabsContent value="billing">
                     <ClientSettingBilling />
                 </TabsContent>
             </Tabs>

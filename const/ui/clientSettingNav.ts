@@ -15,6 +15,20 @@ export const CLIENT_SETTING_ACCOUNT_NAV: ClientSettingNav[] = [
     },
 ];
 
-export const CLIENT_SETTING_MERCHANT_NAV: ClientSettingNav[] = [];
+export const CLIENT_SETTING_MERCHANT_NAV: ClientSettingNav[] = [
+    {
+        name: "Main",
+        target: "#main",
+    },
+    {
+        name: "Collaborator",
+        target: "#collaborator",
+    },
+];
 
-export const CLIENT_SETTING_BILLING_NAV: ClientSettingNav[] = [];
+export const CLIENT_SETTING_BILLING_NAV: ClientSettingNav[] = [
+    {
+        name: "Package",
+        target: "#package",
+    },
+];

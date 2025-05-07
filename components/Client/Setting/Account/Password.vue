@@ -1,7 +1,7 @@
 <template>
     <div id="password" class="flex flex-col">
         <h2 class="text-lg font-semibold">Change Password</h2>
-        <form @submit="onSubmit" class="w-[40%] mt-8 space-y-4">
+        <form @submit="onSubmit" class="w-full lg:w-[40%] mt-8 space-y-4">
             <FormField v-slot="{ componentField }" name="password">
                 <FormItem>
                     <FormLabel class="mb-2">New Password</FormLabel>
@@ -23,7 +23,7 @@
             <Button @click="isEditing = !isEditing" variant="ghost">
                 {{ isEditing ? "Cancel" : "Edit" }}
             </Button>
-            <Button v-show="isEditing" type="submit" class="ml-2">Save</Button>
+            <Button v-show="isEditing" variant="secondary" type="submit" class="ml-2">Save</Button>
         </form>
     </div>
 </template>

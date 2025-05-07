@@ -38,7 +38,7 @@
             <Button @click="isEditing = !isEditing" variant="ghost">
                 {{ isEditing ? "Cancel" : "Edit" }}
             </Button>
-            <Button v-show="isEditing" type="submit" class="ml-2">Save</Button>
+            <Button v-show="isEditing" variant="secondary" type="submit" class="ml-2">Save</Button>
         </form>
     </div>
 </template>
@@ -52,9 +52,9 @@ const isEditing = ref(false);
 
 const formSchema = toTypedSchema(
     z.object({
-        1: z.boolean(),
-        2: z.boolean(),
-        3: z.boolean(),
+        1: z.boolean().optional(),
+        2: z.boolean().optional(),
+        3: z.boolean().optional(),
     })
 );
 

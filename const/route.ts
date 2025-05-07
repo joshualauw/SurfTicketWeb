@@ -7,8 +7,11 @@ export enum RouteKey {
     ADMIN_SCAN = "admin-scan",
     ADMIN_CHAT = "admin-chat",
     ADMIN_SETTING = "admin-setting",
-    LOGIN = "login",
-    REGISTER = "register",
+    AUTH_LOGIN = "auth-login",
+    AUTH_REGISTER = "auth-register",
+    AUTH_CONFIRM_EMAIL = "auth-confirm-email",
+    AUTH_FORGOT_PASSWORD = "auth-forgot-password",
+    AUTH_RESET_PASSWORD = "auth-reset-password",
     HOME = "home",
     SETTING = "setting",
 }
