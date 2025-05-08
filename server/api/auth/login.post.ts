@@ -1,14 +1,14 @@
 import { BASE_URL } from "~/const/api";
 import { ApiResponse } from "~/types/api/ApiResponse";
-import { LoginData } from "~/types/api/auth/LoginData";
-import { LoginDto } from "~/types/api/auth/LoginDto";
+import { LoginResponse } from "~/types/api/auth/LoginResponse";
+import { LoginRequest } from "~/types/api/auth/LoginRequest";
 import type { FetchError } from "ofetch";
 
 export default defineEventHandler(async (event) => {
-    const body = await readBody<LoginDto>(event);
+    const body = await readBody<LoginRequest>(event);
 
     try {
-        const res = await $fetch<ApiResponse<LoginData>>("/auth/login", {
+        const res = await $fetch<ApiResponse<LoginResponse>>("/auth/login", {
             method: "POST",
             body,
             baseURL: BASE_URL,
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
         if (res.success && res.data) {
             setResponseStatus(event, res.status);
 
-            setCookie(event, "auth", JSON.stringify(res.data), {
+            setCookie(event, "auth", res.data.token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",

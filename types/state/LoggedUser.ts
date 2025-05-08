@@ -1,5 +1,3 @@
-export interface LoggedUser {
-    email: string;
-    id: string;
-    username: string;
-}
+import type { MeResponse } from "~/types/api/auth/MeResponse";
+
+export type LoggedUser = MeResponse;

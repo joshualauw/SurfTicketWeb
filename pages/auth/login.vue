@@ -61,7 +61,6 @@ const formSchema = toTypedSchema(
 const { handleSubmit } = useForm({
     validationSchema: formSchema,
 });
-const { setLoggedUser } = useAuthStore();
 const { login } = useAuthApi();
 const { loading, execute, error, success, message, data } = useApi(login);
 
@@ -70,7 +69,6 @@ const onSubmit = handleSubmit(async (values) => {
 
     if (success.value && data.value) {
         toast.success(message.value, { class: "toast-success" });
-        setLoggedUser(data.value.user);
 
         await nextTick();
         navigateTo({ name: RouteKey.AUTH_CONFIRM_EMAIL });
