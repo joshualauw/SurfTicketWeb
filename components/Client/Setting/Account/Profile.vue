@@ -41,37 +41,53 @@
                     <FormMessage />
                 </FormItem>
             </FormField>
-            <Button @click="isEditing = !isEditing" variant="ghost">
+            <Button @click="isEditing = !isEditing" variant="ghost" type="button">
                 {{ isEditing ? "Cancel" : "Edit" }}
             </Button>
-            <Button v-show="isEditing" variant="secondary" type="submit" class="ml-2">Save</Button>
+            <Button v-show="isEditing" :loading="loading" variant="secondary" type="submit" class="ml-2">Save</Button>
         </form>
     </div>
 </template>
 
 <script setup lang="ts">
+import useUserApi from "~/composables/external/useUserApi";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
+import { toast } from "vue-sonner";
 import { z } from "zod";
+
+const { data: props } = defineProps<{ data: z.infer<typeof schema> }>();
 
 const isEditing = ref(false);
 
-const formSchema = toTypedSchema(
-    z.object({
-        firstName: z.string(),
-        lastName: z.string(),
-        email: z.string().email(),
-    })
-);
+const schema = z.object({
+    firstName: z.string().min(3),
+    lastName: z.string().min(3),
+    email: z.string().email(),
+});
+
+const formSchema = toTypedSchema(schema);
 
 const { handleSubmit } = useForm({
     validationSchema: formSchema,
     initialValues: {
-        firstName: "Joshua",
-        lastName: "William",
-        email: "joshualauw1@gmail.com",
+        firstName: props.firstName,
+        lastName: props.lastName,
+        email: props.email,
     },
 });
 
-const onSubmit = handleSubmit((values) => {});
+const { updateProfile } = useUserApi();
+const { loading, execute, success, message, data } = useApi(updateProfile);
+
+const onSubmit = handleSubmit(async (values) => {
+    await execute(values);
+
+    if (success.value && data.value) {
+        isEditing.value = false;
+        toast.success(message.value, { class: "toast-success" });
+    } else {
+        toast.error(message.value, { class: "toast-error" });
+    }
+});
 </script>

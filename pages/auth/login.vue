@@ -26,12 +26,9 @@
             </Button>
         </div>
         <div>
-            <Button :disabled="loading" type="submit" class="w-full">
-                <Loader2Icon v-if="loading" class="w-4 h-4 mr-2 animate-spin" />
-                Submit
-            </Button>
+            <Button :loading="loading" type="submit" class="w-full">Submit</Button>
             <Button variant="link" type="button" class="block mx-auto mt-2">
-                <NuxtLink :to="{ name: RouteKey.AUTH_REGISTER }"> doesn't have an account? </NuxtLink>
+                <NuxtLink :to="{ name: RouteKey.AUTH_REGISTER }">doesn't have an account?</NuxtLink>
             </Button>
         </div>
     </form>
@@ -41,7 +38,6 @@
 import { RouteKey } from "~/const/route";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
-import { Loader2Icon } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 import * as z from "zod";
 
@@ -62,19 +58,23 @@ const { handleSubmit } = useForm({
     validationSchema: formSchema,
 });
 const { login } = useAuthApi();
-const { loading, execute, error, success, message, data } = useApi(login);
+const { loading, execute, success, message, error } = useApi(login);
 
 const onSubmit = handleSubmit(async (values) => {
     await execute(values);
 
-    if (success.value && data.value) {
+    if (success.value) {
         toast.success(message.value, { class: "toast-success" });
 
         await nextTick();
-        navigateTo({ name: RouteKey.AUTH_CONFIRM_EMAIL });
+        navigateTo({ name: RouteKey.HOME });
     } else {
-        console.log(error.value);
         toast.error(message.value, { class: "toast-error" });
+
+        if (error.value && error.value.errorCode == 2003) {
+            await nextTick();
+            navigateTo({ name: RouteKey.AUTH_CONFIRM_EMAIL, query: { email: values.email } });
+        }
     }
 });
 </script>

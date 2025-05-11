@@ -1,6 +1,6 @@
 <template>
-    <div class="grid grid-cols-4 border-2 rounded-lg h-[84vh] bg-zinc-50">
-        <div class="hidden lg:block lg:col-span-1 h-[84vh] bg-primary rounded-r-none py-4 px-8 text-gray-200">
+    <div class="grid grid-cols-4 h-full">
+        <div class="hidden lg:block lg:col-span-1 bg-muted py-4 px-8">
             <h2 class="font-bold my-6">Navigation</h2>
             <div class="space-y-2">
                 <Button v-for="nav in navs" variant="ghost" class="rounded-full w-full">
@@ -8,15 +8,15 @@
                 </Button>
             </div>
         </div>
-        <div class="col-span-4 lg:col-span-3 px-6">
+        <div class="col-span-4 lg:col-span-3 px-6 h-full overflow-y-auto">
             <Tabs default-value="account" class="mt-4">
                 <TabsList class="grid w-full grid-cols-3">
                     <TabsTrigger @click="setSettingAccountNav" value="account">Account</TabsTrigger>
                     <TabsTrigger @click="setSettingMerchantNav" value="merchant">Merchant</TabsTrigger>
                     <TabsTrigger @click="setSettingBillingNav" value="billing">Billing</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account">
-                    <ClientSettingAccount />
+                <TabsContent v-if="getProfileData && getProfileData.data" value="account">
+                    <ClientSettingAccount :data="getProfileData.data" />
                 </TabsContent>
                 <TabsContent value="merchant">
                     <ClientSettingMerchant />
@@ -37,12 +37,16 @@ import {
     CLIENT_SETTING_BILLING_NAV,
     CLIENT_SETTING_MERCHANT_NAV,
 } from "~/const/ui/clientSettingNav";
+import useUserApi from "~/composables/external/useUserApi";
 
 definePageMeta({
     middleware: ["auth"],
     layout: "client",
     name: RouteKey.SETTING,
 });
+
+const { getProfile } = useUserApi();
+const { data: getProfileData } = await useAsyncData(() => getProfile());
 
 const navs = ref<ClientSettingNav[]>(CLIENT_SETTING_ACCOUNT_NAV);
 

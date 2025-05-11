@@ -1,7 +1,7 @@
 <template>
     <NuxtLayout name="default">
         <ClientHeader />
-        <div class="p-3 md:p-6">
+        <div class="flex-1 overflow-auto">
             <slot />
         </div>
     </NuxtLayout>

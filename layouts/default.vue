@@ -1,10 +1,10 @@
 <template>
-    <main class="w-screen h-screen bg-white">
+    <main class="bg-white flex flex-col h-screen">
         <slot />
+        <ClientOnly>
+            <Toaster position="top-right" />
+        </ClientOnly>
     </main>
-    <ClientOnly>
-        <Toaster position="top-right" />
-    </ClientOnly>
 </template>
 
 <style>
