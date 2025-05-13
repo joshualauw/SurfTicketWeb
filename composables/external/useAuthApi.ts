@@ -18,6 +18,12 @@ export default function () {
         });
     }
 
+    function logout() {
+        return $fetch("/api/auth/logout", {
+            method: "POST",
+        });
+    }
+
     function verifyEmail(payload: VerifyEmailRequest) {
         return $fetch<ApiResponse<VerifyEmailResponse>>("/api/auth/verify", {
             method: "POST",
@@ -50,5 +56,5 @@ export default function () {
         });
     }
 
-    return { login, me, changePassword, register, verifyEmail };
+    return { login, me, changePassword, register, verifyEmail, logout };
 }

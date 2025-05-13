@@ -59,13 +59,10 @@
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <NuxtLink
-                                :to="{ name: RouteKey.AUTH_LOGIN }"
-                                class="text-destructive flex items-center w-full"
-                            >
+                            <div @click="doLogout" class="text-destructive flex items-center w-full">
                                 <LogOutIcon class="mr-2 text-destructive" />
                                 Log Out
-                            </NuxtLink>
+                            </div>
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
@@ -76,5 +73,20 @@
 
 <script setup lang="ts">
 import { ArrowRightIcon, BellIcon, LogOutIcon, SettingsIcon } from "lucide-vue-next";
+import { toast } from "vue-sonner";
 import { RouteKey } from "~/const/route";
+
+const { logout } = useAuthApi();
+
+async function doLogout() {
+    try {
+        await logout();
+        toast.success("logout successful", { class: "toast-success" });
+
+        await nextTick();
+        navigateTo({ name: RouteKey.AUTH_LOGIN });
+    } catch (e: any) {
+        toast.error("logout failed", { class: "toast-error" });
+    }
+}
 </script>
