@@ -1,6 +1,8 @@
 <template>
     <Dialog>
-        <DialogTrigger><Button variant="secondary">Create Now +</Button></DialogTrigger>
+        <DialogTrigger>
+            <Button variant="secondary">Create Now +</Button>
+        </DialogTrigger>
         <DialogContent>
             <form @submit="onSubmit" class="w-full space-y-6">
                 <DialogHeader>
@@ -28,9 +30,9 @@
                 </div>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="ghost">Cancel</Button>
+                        <Button variant="ghost" type="button">Cancel</Button>
                     </DialogClose>
-                    <Button variant="secondary" type="submit">Save</Button>
+                    <Button variant="secondary" :loading="loading">Save</Button>
                 </DialogFooter>
             </form>
         </DialogContent>
@@ -40,6 +42,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
+import { toast } from "vue-sonner";
 import { z } from "zod";
 import { RouteKey } from "~/const/route";
 
@@ -52,14 +55,21 @@ const formSchema = toTypedSchema(
 
 const { handleSubmit } = useForm({
     validationSchema: formSchema,
-    initialValues: {
-        name: "",
-        description: "",
-    },
 });
 
-const onSubmit = handleSubmit((values) => {
-    console.log(values);
-    navigateTo({ name: RouteKey.ADMIN_DASHBOARD });
+const { createMerchant } = useMerchantApi();
+const { loading, execute, success, message, data } = useApi(createMerchant);
+
+const onSubmit = handleSubmit(async (values) => {
+    await execute(values);
+
+    if (success.value && data.value) {
+        toast.success(message.value, { class: "toast-success" });
+
+        await nextTick();
+        navigateTo({ name: RouteKey.ADMIN_DASHBOARD, query: { id: data.value.merchantId } });
+    } else {
+        toast.error(message.value, { class: "toast-error" });
+    }
 });
 </script>

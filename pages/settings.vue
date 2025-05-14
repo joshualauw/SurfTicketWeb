@@ -15,11 +15,11 @@
                     <TabsTrigger @click="setSettingMerchantNav" value="merchant">Merchant</TabsTrigger>
                     <TabsTrigger @click="setSettingBillingNav" value="billing">Billing</TabsTrigger>
                 </TabsList>
-                <TabsContent v-if="getProfileData && getProfileData.data" value="account">
-                    <ClientSettingAccount :data="getProfileData.data" />
+                <TabsContent v-if="profile && profile.data" value="account">
+                    <ClientSettingAccount :data="profile.data" />
                 </TabsContent>
-                <TabsContent value="merchant">
-                    <ClientSettingMerchant />
+                <TabsContent v-if="handledMerchants && handledMerchants.data" value="merchant">
+                    <ClientSettingMerchant :data="handledMerchants.data" />
                 </TabsContent>
                 <TabsContent value="billing">
                     <ClientSettingBilling />
@@ -46,7 +46,9 @@ definePageMeta({
 });
 
 const { getProfile } = useUserApi();
-const { data: getProfileData } = await useAsyncData(() => getProfile());
+const { getHandledMerchants } = useMerchantApi();
+const { data: profile } = await useAsyncData(() => getProfile());
+const { data: handledMerchants } = await useAsyncData(() => getHandledMerchants());
 
 const navs = ref<ClientSettingNav[]>(CLIENT_SETTING_ACCOUNT_NAV);
 
