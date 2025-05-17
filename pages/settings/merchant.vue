@@ -2,7 +2,7 @@
     <div v-if="merchants && merchants.data" class="px-6 lg:px-14 pt-8 overflow-y-auto space-y-8">
         <div
             v-if="merchants.data.collaboratedMerchants.length == 0 && merchants.data.ownedMerchants.length == 0"
-            class="w-full h-full flex-center flex-col space-y-4"
+            class="w-full h-full flex-center flex-col space-y-4 mt-14 lg:mt-28"
         >
             <CalendarX2Icon class="text-gray-400 w-24 h-24" />
             <p class="text-gray-400 text-xl">-You have no Merchant Account-</p>
@@ -19,7 +19,7 @@
                     :id="merchant.id"
                     :name="merchant.name"
                     :logo-url="merchant.logoUrl"
-                    :last-visited-at="merchant.createdAt"
+                    :last-visited-at="merchant.lastVisitedAt"
                 />
                 <p v-if="merchants.data.ownedMerchants.length == 0" class="text-gray-400 text-center">
                     -You have no Main Account-
@@ -32,7 +32,7 @@
                     :id="merchant.id"
                     :name="merchant.name"
                     :logo-url="merchant.logoUrl"
-                    :last-visited-at="merchant.createdAt"
+                    :last-visited-at="merchant.lastVisitedAt"
                 />
                 <p v-if="merchants.data.collaboratedMerchants.length == 0" class="text-gray-400 text-center">
                     -You have no Collaborator Account-

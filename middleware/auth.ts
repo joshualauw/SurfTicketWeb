@@ -6,11 +6,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const { loggedUser, setLoggedUser } = useAuthStore();
 
     if (!loggedUser.value) {
-        const res = await me();
-
-        if (res.data && res.success) {
-            setLoggedUser(res.data);
-        } else {
+        try {
+            const res = await me();
+            if (res.data && res.success) {
+                setLoggedUser(res.data);
+            }
+        } catch (err) {
             return navigateTo({ name: RouteKey.AUTH_LOGIN });
         }
     }

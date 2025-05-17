@@ -4,6 +4,4 @@ export interface BaseMerchant extends BaseEntity {
     name: string;
     description: string;
     logoUrl?: string;
-    venues: object;
-    merchantUsers: object;
 }
