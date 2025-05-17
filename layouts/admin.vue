@@ -4,8 +4,20 @@
             <AdminSidebar />
             <main class="w-screen">
                 <AdminNavbar />
-                <div class="p-2 md:p-3 xl:p-4 bg-slate-100 min-h-[88vh] h-auto">
-                    <h1 class="text-lg md:text-2xl font-bold mb-2 md:mb-3 xl:mb-4">{{ $route.meta.title }}</h1>
+                <div class="p-4 md:p-6 xl:p-8 bg-slate-50 min-h-[88vh] h-auto">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-lg md:text-2xl font-bold mb-2">{{ $route.meta.title }}</h1>
+                        <div v-if="modules.length > 0" class="flex">
+                            <Button
+                                v-if="modules.includes('add')"
+                                variant="secondary"
+                                class="w-24"
+                                @click="navigateTo(route.fullPath + '/create')"
+                            >
+                                + Add
+                            </Button>
+                        </div>
+                    </div>
                     <Breadcrumb v-if="$route.meta.name != RouteKey.ADMIN_DASHBOARD">
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -35,6 +47,7 @@
 import { RouteKey } from "~/const/route";
 
 const route = useRoute();
+const modules = computed(() => (route.meta.modules ?? []) as string[]);
 const breadcrumbs = computed(() => generateBreadcrumbs(route.path));
 
 function generateBreadcrumbs(url: string, skipStart = 1, skipEnd = 1): { path: string; name: string }[] {

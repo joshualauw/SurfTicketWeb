@@ -1,8 +1,6 @@
 <template>
     <div class="container py-10 mx-auto">
-        <div class="w-full flex items-center justify-between">
-            <NuxtLink :to="{ name: RouteKey.ADMIN_VENUE_CREATE }">create</NuxtLink>
-        </div>
+        <p class="text-center text-lg text-gray-400">-no venues here-</p>
     </div>
 </template>
 
@@ -13,5 +11,6 @@ definePageMeta({
     layout: "admin",
     title: "Venue",
     name: RouteKey.ADMIN_VENUE,
+    modules: ["add"],
 });
 </script>

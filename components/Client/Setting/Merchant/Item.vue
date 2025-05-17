@@ -11,17 +11,22 @@
                 </small>
             </div>
         </div>
-        <Button variant="ghost" class="border">
-            <LogInIcon class="mr-1" />
-            Enter
-        </Button>
+        <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD, query: { id } }">
+            <Button variant="ghost" class="border hidden sm:flex">
+                <LogInIcon class="mr-1" />
+                Enter
+            </Button>
+        </NuxtLink>
     </div>
 </template>
 
 <script setup lang="ts">
 import dayjs from "dayjs";
+import { LogInIcon } from "lucide-vue-next";
+import { RouteKey } from "~/const/route";
 
 defineProps<{
+    id: number;
     name: string;
     logoUrl?: string;
     lastVisitedAt: string;

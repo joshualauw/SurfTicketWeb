@@ -1,5 +1,5 @@
 <template>
-    <div class="px-6 lg:px-28 pt-8 h-[68vh] overflow-y-auto space-y-8">
+    <div class="px-6 xl:px-28 pt-8 overflow-y-auto space-y-8">
         <div id="package" class="flex flex-col">
             <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="border rounded-sm p-8 space-y-8">
@@ -58,5 +58,20 @@
 </template>
 
 <script setup lang="ts">
-import { CheckIcon, DotIcon } from "lucide-vue-next";
+import { CheckIcon } from "lucide-vue-next";
+import { RouteKey } from "~/const/route";
+
+const CLIENT_SETTING_BILLING_NAV: ClientSettingNav[] = [
+    {
+        name: "Package",
+        target: "#package",
+    },
+];
+
+definePageMeta({
+    middleware: ["auth"],
+    layout: "settings",
+    name: RouteKey.SETTING_BILLING,
+    navs: CLIENT_SETTING_BILLING_NAV,
+});
 </script>

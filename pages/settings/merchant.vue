@@ -1,7 +1,7 @@
 <template>
-    <div class="px-14 pt-8 h-[68vh]">
+    <div v-if="merchants && merchants.data" class="px-6 lg:px-14 pt-8 overflow-y-auto space-y-8">
         <div
-            v-if="data.collaboratedMerchants.length == 0 && data.ownedMerchants.length == 0"
+            v-if="merchants.data.collaboratedMerchants.length == 0 && merchants.data.ownedMerchants.length == 0"
             class="w-full h-full flex-center flex-col space-y-4"
         >
             <CalendarX2Icon class="text-gray-400 w-24 h-24" />
@@ -15,34 +15,56 @@
                     <ClientSettingMerchantCreate />
                 </div>
                 <ClientSettingMerchantItem
-                    v-for="merchant in data.ownedMerchants"
+                    v-for="merchant in merchants.data.ownedMerchants"
+                    :id="merchant.id"
                     :name="merchant.name"
                     :logo-url="merchant.logoUrl"
                     :last-visited-at="merchant.createdAt"
                 />
-                <p v-if="data.ownedMerchants.length == 0" class="text-gray-400 text-center">
+                <p v-if="merchants.data.ownedMerchants.length == 0" class="text-gray-400 text-center">
                     -You have no Main Account-
                 </p>
             </div>
             <div id="collaborator" class="flex flex-col">
                 <h2 class="text-lg font-semibold mb-4">Collaborator Accounts</h2>
                 <ClientSettingMerchantItem
-                    v-for="merchant in data.collaboratedMerchants"
+                    v-for="merchant in merchants.data.collaboratedMerchants"
+                    :id="merchant.id"
                     :name="merchant.name"
                     :logo-url="merchant.logoUrl"
                     :last-visited-at="merchant.createdAt"
                 />
-                <p v-if="data.collaboratedMerchants.length == 0" class="text-gray-400 text-center">
+                <p v-if="merchants.data.collaboratedMerchants.length == 0" class="text-gray-400 text-center">
                     -You have no Collaborator Account-
                 </p>
             </div>
         </div>
     </div>
+    <div v-else>.</div>
 </template>
 
 <script setup lang="ts">
 import { CalendarX2Icon } from "lucide-vue-next";
-import type { GetHandledMerchantResponse } from "~/types/api/merchant/GetHandledMerchantResponse";
+import { RouteKey } from "~/const/route";
 
-defineProps<{ data: GetHandledMerchantResponse }>();
+const CLIENT_SETTING_MERCHANT_NAV = [
+    {
+        name: "Main",
+        target: "#main",
+    },
+    {
+        name: "Collaborator",
+        target: "#collaborator",
+    },
+];
+
+definePageMeta({
+    middleware: ["auth"],
+    layout: "settings",
+    name: RouteKey.SETTING_MERCHANT,
+    navs: CLIENT_SETTING_MERCHANT_NAV,
+});
+
+const { getHandledMerchants } = useMerchantApi();
+const { data: merchants } = await useAsyncData(() => getHandledMerchants());
 </script>

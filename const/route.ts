@@ -12,6 +12,8 @@ export enum RouteKey {
     AUTH_CONFIRM_EMAIL = "auth-confirm-email",
     AUTH_FORGOT_PASSWORD = "auth-forgot-password",
     AUTH_RESET_PASSWORD = "auth-reset-password",
+    SETTING_ACCOUNT = "setting-account",
+    SETTING_MERCHANT = "setting-merchant",
+    SETTING_BILLING = "setting-billing",
     HOME = "home",
-    SETTING = "setting",
 }

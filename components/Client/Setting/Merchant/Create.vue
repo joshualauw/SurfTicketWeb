@@ -1,42 +1,44 @@
 <template>
-    <Dialog>
-        <DialogTrigger>
-            <Button variant="secondary">Create Now +</Button>
-        </DialogTrigger>
-        <DialogContent>
-            <form @submit="onSubmit" class="w-full space-y-6">
-                <DialogHeader>
-                    <DialogTitle>Create Merchant</DialogTitle>
-                </DialogHeader>
-                <div class="space-y-4">
-                    <FormField v-slot="{ componentField }" name="name">
-                        <FormItem>
-                            <FormLabel class="mb-2">Merchant Name</FormLabel>
-                            <FormControl>
-                                <Input type="text" placeholder="Merchant Name..." v-bind="componentField" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <FormField v-slot="{ componentField }" name="description">
-                        <FormItem>
-                            <FormLabel class="mb-2">Description</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder="Describe your business..." v-bind="componentField" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="ghost" type="button">Cancel</Button>
-                    </DialogClose>
-                    <Button variant="secondary" :loading="loading">Save</Button>
-                </DialogFooter>
-            </form>
-        </DialogContent>
-    </Dialog>
+    <ClientOnly>
+        <Dialog>
+            <DialogTrigger>
+                <Button variant="secondary">Create Now +</Button>
+            </DialogTrigger>
+            <DialogContent>
+                <form @submit="onSubmit" class="w-full space-y-6">
+                    <DialogHeader>
+                        <DialogTitle>Create Merchant</DialogTitle>
+                    </DialogHeader>
+                    <div class="space-y-4">
+                        <FormField v-slot="{ componentField }" name="name">
+                            <FormItem>
+                                <FormLabel class="mb-2">Merchant Name</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="Merchant Name..." v-bind="componentField" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField v-slot="{ componentField }" name="description">
+                            <FormItem>
+                                <FormLabel class="mb-2">Description</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder="Describe your business..." v-bind="componentField" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                    </div>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="ghost" type="button">Cancel</Button>
+                        </DialogClose>
+                        <Button variant="secondary" :loading="loading">Save</Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    </ClientOnly>
 </template>
 
 <script setup lang="ts">

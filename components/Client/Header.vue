@@ -51,10 +51,10 @@
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-24 md:w-48">
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                            <NuxtLink :to="{ name: RouteKey.SETTING }" class="flex items-center w-full">
-                                <SettingsIcon class="mr-2" />
-                                Settings
+                        <DropdownMenuItem v-for="drop in CLIENT_DROPDOWN">
+                            <NuxtLink :to="{ name: drop.key }" class="flex items-center w-full">
+                                <component :is="drop.icon" class="mr-2" />
+                                {{ drop.title }}
                             </NuxtLink>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -72,9 +72,27 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowRightIcon, BellIcon, LogOutIcon, SettingsIcon } from "lucide-vue-next";
+import { ArrowRightIcon, BadgeDollarSignIcon, BellIcon, LogOutIcon, StoreIcon, UserIcon } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 import { RouteKey } from "~/const/route";
+
+const CLIENT_DROPDOWN = [
+    {
+        title: "Profile",
+        icon: UserIcon,
+        key: RouteKey.SETTING_ACCOUNT,
+    },
+    {
+        title: "Merchant",
+        icon: StoreIcon,
+        key: RouteKey.SETTING_MERCHANT,
+    },
+    {
+        title: "Billing",
+        icon: BadgeDollarSignIcon,
+        key: RouteKey.SETTING_BILLING,
+    },
+];
 
 const { logout } = useAuthApi();
 

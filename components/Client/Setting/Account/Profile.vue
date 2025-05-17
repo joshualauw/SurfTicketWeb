@@ -56,7 +56,13 @@ import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
 import { z } from "zod";
 
-const { data: props } = defineProps<{ data: z.infer<typeof schema> }>();
+const { data: props } = defineProps<{
+    data: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+}>();
 
 const isEditing = ref(false);
 
