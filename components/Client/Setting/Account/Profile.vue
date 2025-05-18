@@ -6,8 +6,8 @@
                 <AvatarFallback class="text-xl">JW</AvatarFallback>
             </Avatar>
             <div class="ml-4">
-                <p class="text-lg font-semibold">Joshua William</p>
-                <small>Pro plan</small>
+                <p class="text-lg font-semibold">{{ loggedUser?.username }}</p>
+                <small>{{ loggedUser?.activePlan }} plan</small>
             </div>
         </div>
         <form @submit="onSubmit" class="w-full lg:w-[40%] mt-8 space-y-4">
@@ -83,6 +83,7 @@ const { handleSubmit } = useForm({
     },
 });
 
+const { loggedUser } = useAuthStore();
 const { updateProfile } = useUserApi();
 const { loading, execute, success, message, data } = useApi(updateProfile);
 

@@ -12,7 +12,11 @@
                     <SidebarMenu>
                         <SidebarMenuItem v-for="item in ADMIN_SIDEBAR" :key="item.key">
                             <SidebarMenuButton asChild :isActive="$route.meta.name == item.key">
-                                <NuxtLink :to="{ name: item.key }" class="h-10" :style="{ 'font-size': '14px' }">
+                                <NuxtLink
+                                    :to="{ name: item.key, query: $route.query }"
+                                    class="h-10"
+                                    :style="{ 'font-size': '14px' }"
+                                >
                                     <component :is="item.icon" />
                                     <span class="ml-1">{{ item.title }}</span>
                                 </NuxtLink>

@@ -2,28 +2,28 @@
     {
         "name": "Free",
         "code": "BASIC",
-        "price": "Rp. 0",
+        "price": "0",
         "merchantCount": 1,
         "collaboratorCount": 1,
-        "reportType": "Report & Analytics",
+        "reportType": "",
         "ticketCount": 3
     },
     {
         "name": "Starter",
         "code": "STARTER",
-        "price": "Rp. 149.000",
+        "price": "149.000",
         "merchantCount": 2,
         "collaboratorCount": 3,
-        "reportType": "Advanced Report & Analytics",
+        "reportType": "Advanced",
         "ticketCount": 6
     },
     {
         "name": "Pro",
         "code": "PRO",
-        "price": "Rp. 249.000",
+        "price": "249.000",
         "merchantCount": 3,
         "collaboratorCount": 5,
-        "reportType": "Advanced Report & Analytics",
+        "reportType": "Advanced",
         "ticketCount": 10
     }
 ]

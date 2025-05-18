@@ -8,6 +8,7 @@
 import { RouteKey } from "~/const/route";
 
 definePageMeta({
+    middleware: ["auth", "admin"],
     layout: "admin",
     title: "Tickets",
     name: RouteKey.ADMIN_TICKET,

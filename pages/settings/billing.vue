@@ -5,7 +5,9 @@
                 <div v-for="pricing in pricings" class="border rounded-sm p-8 space-y-8">
                     <div class="text-center">
                         <p class="text-2xl font-extrabold">{{ pricing.name }}</p>
-                        <p class="text-muted-foreground mt-2">Rp. {{ pricing.price }} / month</p>
+                        <p class="text-muted-foreground mt-2">
+                            <span class="font-bold text-secondary">Rp. {{ pricing.price }}</span> / month
+                        </p>
                     </div>
                     <ul class="w-fit mx-auto space-y-3">
                         <li class="flex items-center">
@@ -18,7 +20,7 @@
                         </li>
                         <li class="flex items-center">
                             <CheckIcon class="w-5 h-5 mr-1 text-primary" />
-                            {{ pricing.reportType }}
+                            {{ pricing.reportType }} Report & Analytics
                         </li>
                         <li class="flex items-center">
                             <CheckIcon class="w-5 h-5 mr-1 text-primary" />

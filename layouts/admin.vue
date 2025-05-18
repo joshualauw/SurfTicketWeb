@@ -5,23 +5,13 @@
             <main class="w-screen">
                 <AdminNavbar />
                 <div class="p-4 md:p-6 xl:p-8 bg-slate-50 min-h-[88vh] h-auto">
-                    <div class="flex justify-between items-center">
-                        <h1 class="text-lg md:text-2xl font-bold mb-2">{{ $route.meta.title }}</h1>
-                        <div v-if="modules.length > 0" class="flex">
-                            <Button
-                                v-if="modules.includes('add')"
-                                variant="secondary"
-                                class="w-24"
-                                @click="navigateTo(route.fullPath + '/create')"
-                            >
-                                + Add
-                            </Button>
-                        </div>
-                    </div>
+                    <h1 class="text-lg md:text-2xl font-bold mb-2">{{ $route.meta.title }}</h1>
                     <Breadcrumb v-if="$route.meta.name != RouteKey.ADMIN_DASHBOARD">
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD }">Dashboard</NuxtLink>
+                                <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD, query: $route.query }">
+                                    Dashboard
+                                </NuxtLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <template v-for="crumb in breadcrumbs">
@@ -47,7 +37,6 @@
 import { RouteKey } from "~/const/route";
 
 const route = useRoute();
-const modules = computed(() => (route.meta.modules ?? []) as string[]);
 const breadcrumbs = computed(() => generateBreadcrumbs(route.path));
 
 function generateBreadcrumbs(url: string, skipStart = 1, skipEnd = 1): { path: string; name: string }[] {
@@ -61,7 +50,7 @@ function generateBreadcrumbs(url: string, skipStart = 1, skipEnd = 1): { path: s
         const pathSegments = originalSegments.slice(0, skipStart + i + 1);
         const path = "/" + pathSegments.join("/");
         const name = slicedSegments[i].charAt(0).toUpperCase() + slicedSegments[i].slice(1);
-        breadcrumbs.push({ path, name });
+        breadcrumbs.push({ path: path + `?id=${route.query.id}`, name });
     }
 
     return breadcrumbs;

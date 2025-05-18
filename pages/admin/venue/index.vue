@@ -8,9 +8,15 @@
 import { RouteKey } from "~/const/route";
 
 definePageMeta({
+    middleware: ["auth", "admin"],
     layout: "admin",
     title: "Venue",
     name: RouteKey.ADMIN_VENUE,
-    modules: ["add"],
 });
+
+const route = useRoute();
+const { merchantUser } = useMerchantUserStore();
+
+const { getAdminVenues } = useVenueApi();
+const { data: adminVenues } = await useAsyncData(() => getAdminVenues(merchantUser.value?.merchantId ?? 0));
 </script>
