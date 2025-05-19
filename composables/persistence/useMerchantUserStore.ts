@@ -7,5 +7,9 @@ export default function () {
         merchantUser.value = state;
     }
 
-    return { merchantUser, setMerchantUser };
+    function getMerchantId() {
+        return merchantUser?.value?.merchantId ?? 0;
+    }
+
+    return { merchantUser, setMerchantUser, getMerchantId };
 }
