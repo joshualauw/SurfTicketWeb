@@ -1,4 +1,4 @@
-import type { PlanCode } from "~/types/api/plan/BasePlan";
+import type { PlanCode } from "~/types/atoms/PlanCode";
 
 export interface MeResponse {
     userId: string;
