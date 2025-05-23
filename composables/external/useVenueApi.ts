@@ -5,10 +5,11 @@ import type { CreateVenueResponse } from "~/types/api/venue/CreateVenueResponse"
 import type { GetAdminVenuesResponse } from "~/types/api/venue/GetAdminVenuesResponse";
 
 export default function () {
-    function getAdminVenues(merchantId: number) {
+    function getAdminVenues(merchantId: number, page: number) {
         const fetch = useRequestFetch();
         return fetch<ApiResponse<GetAdminVenuesResponse>>(`venue/admin/${merchantId}`, {
             method: "GET",
+            query: { page, size: 2 },
             baseURL: ENTRY_URL,
         });
     }
