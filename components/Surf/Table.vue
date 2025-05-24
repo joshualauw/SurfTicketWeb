@@ -11,8 +11,8 @@
                         @click="col.sortable && toggleSort(col.key)"
                     >
                         {{ col.label }}
-                        <span v-if="sortKey === col.key" class="ml-1 text-xs">
-                            {{ sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "" }}
+                        <span v-if="sort.key === col.key" class="ml-1 text-xs">
+                            {{ sort.direction === "asc" ? "▲" : sort.direction === "desc" ? "▼" : "" }}
                         </span>
                     </th>
                 </tr>
@@ -20,7 +20,7 @@
                     <th v-for="col in columns" :key="col.key" class="border p-1">
                         <Input
                             v-if="col.filterable"
-                            v-model="filters[col.key]"
+                            v-model="localFilters[col.key]"
                             placeholder="Filter..."
                             class="w-full border rounded h-8"
                         />
@@ -29,7 +29,7 @@
             </thead>
             <tbody>
                 <tr
-                    v-for="(item, i) in filteredSortedItems"
+                    v-for="(item, i) in data.items"
                     :key="item.id || item"
                     class="bg-zinc-50 hover:bg-zinc-100 transition"
                 >
@@ -43,19 +43,38 @@
                 </tr>
             </tbody>
         </table>
-        <div class="pagination flex justify-end items-center gap-2 mt-2">
-            <Button variant="ghost" @click="goToPage(data.page - 1)" :disabled="data.page === 1"> Prev </Button>
-            <span>Page {{ data.page }} of {{ data.totalPages }}</span>
-            <Button variant="ghost" @click="goToPage(data.page + 1)" :disabled="data.page === data.totalPages">
-                Next
-            </Button>
+        <div class="pagination flex justify-between items-center gap-2 mt-3">
+            <div class="border">
+                <Button
+                    v-for="size in sizeVariants"
+                    @click="switchSize(size)"
+                    class="rounded-none border-r"
+                    :variant="pagination.size == size ? 'default' : 'ghost'"
+                    size="sm"
+                >
+                    {{ size }}
+                </Button>
+            </div>
+            <div>
+                <Button variant="ghost" @click="goToPage(data.page - 1)" :disabled="data.page === 1"> Prev </Button>
+                <span>Page {{ data.page }} of {{ data.totalPages }}</span>
+                <Button
+                    variant="ghost"
+                    @click="goToPage(pagination.page + 1)"
+                    :disabled="data.page === data.totalPages"
+                >
+                    Next
+                </Button>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import type { TableColumn, TableFilter, TablePagination, TableSort } from "~/types/common/table";
 import { defineProps, defineEmits } from "vue";
-import type { TableColumn } from "~/types/atoms/TableColumn";
+import { watch } from "vue";
+import { debounce } from "lodash";
 
 interface PagedResult<T> {
     items: T[];
@@ -65,14 +84,22 @@ interface PagedResult<T> {
     size: number;
 }
 
-const sortKey = ref<string | null>(null);
-const sortDirection = ref<"asc" | "desc" | null>(null);
-const filters = ref<Record<string, string>>({});
-
 const props = defineProps<{
     data: PagedResult<any>;
     columns: TableColumn[];
+    filters: TableFilter;
+    sort: TableSort;
+    pagination: TablePagination;
 }>();
+
+const localFilters = ref({ ...props.filters });
+const sizeVariants = [5, 10, 15];
+
+watch(
+    () => localFilters.value,
+    debounce((val) => emit("update:filters", val), 600),
+    { deep: true }
+);
 
 function getHeaderAlignment(col?: "left" | "center" | "right") {
     if (col == "left" || !col) return "text-left";
@@ -87,57 +114,26 @@ function getRowAlignment(row?: "left" | "center" | "right") {
 }
 
 const emit = defineEmits<{
+    (e: "update:filters", value: TableFilter): void;
+    (e: "update:sort", value: TableSort): void;
     (e: "update:page", value: number): void;
     (e: "update:size", value: number): void;
 }>();
 
-const toggleSort = (key: string) => {
-    if (sortKey.value !== key) {
-        sortKey.value = key;
-        sortDirection.value = "asc";
-    } else if (sortDirection.value === "asc") {
-        sortDirection.value = "desc";
-    } else {
-        sortKey.value = null;
-        sortDirection.value = null;
-    }
+const switchSize = (size: number) => {
+    emit("update:size", size);
 };
 
-const filteredSortedItems = computed(() => {
-    let result = [...props.data.items];
-
-    // Filtering
-    for (const [key, filterValue] of Object.entries(filters.value)) {
-        if (filterValue) {
-            result = result.filter((item) =>
-                String(item[key] ?? "")
-                    .toLowerCase()
-                    .includes(filterValue.toLowerCase())
-            );
-        }
+const toggleSort = (key: string) => {
+    const current = props.sort;
+    if (current.key !== key) {
+        emit("update:sort", { key, direction: "asc" });
+    } else if (current.direction === "asc") {
+        emit("update:sort", { key, direction: "desc" });
+    } else {
+        emit("update:sort", { key: null, direction: null });
     }
-
-    // Sorting
-    if (sortKey.value && sortDirection.value) {
-        result.sort((a, b) => {
-            const valA = a[sortKey.value!];
-            const valB = b[sortKey.value!];
-
-            if (valA == null) return 1;
-            if (valB == null) return -1;
-
-            if (typeof valA === "number" && typeof valB === "number") {
-                return sortDirection.value === "asc" ? valA - valB : valB - valA;
-            }
-
-            return sortDirection.value === "asc"
-                ? String(valA).localeCompare(String(valB))
-                : String(valB).localeCompare(String(valA));
-        });
-    }
-
-    return result;
-});
+};
 
 const goToPage = (page: number) => {
     if (page >= 1 && page <= props.data.totalPages) {
