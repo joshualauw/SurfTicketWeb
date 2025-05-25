@@ -1,8 +1,9 @@
 <template>
     <div class="text-sm">
-        <table class="w-full table-auto border-collapse border">
+        <table class="w-full table-auto border-collapse border-2">
             <thead>
                 <tr>
+                    <th class="border cursor-pointer select-none py-2 px-4 bg-sky-50 w-6 text-center">Row</th>
                     <th
                         v-for="col in columns"
                         :key="col.key"
@@ -17,7 +18,8 @@
                     </th>
                 </tr>
                 <tr v-if="columns.some((c) => c.filterable)">
-                    <th v-for="col in columns" :key="col.key" class="border p-1">
+                    <th class="border p-1 bg-white"></th>
+                    <th v-for="col in columns" :key="col.key" class="border p-1 bg-white">
                         <Input
                             v-if="col.filterable"
                             v-model="localFilters[col.key]"
@@ -28,11 +30,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr
-                    v-for="(item, i) in data.items"
-                    :key="item.id || item"
-                    class="bg-zinc-50 hover:bg-zinc-100 transition"
-                >
+                <tr v-for="(item, i) in data.items" :key="item.id || i" class="bg-white hover:bg-zinc-50 transition">
+                    <td class="border py-2 px-4 text-center">{{ i + (data.page - 1) * data.size + 1 }}</td>
                     <td v-for="col in columns" :key="col.key" class="border py-2 px-4">
                         <div :class="[col.rowClass, getRowAlignment(col.align)]">
                             <slot :name="`cell-${col.key}`" :value="item[col.key]" :item="item">
@@ -70,7 +69,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T extends {id: number; [key: string]: any}">
 import type { TableColumn, TableFilter, TablePagination, TableSort } from "~/types/common/table";
 import { defineProps, defineEmits } from "vue";
 import { watch } from "vue";
@@ -85,11 +84,18 @@ interface PagedResult<T> {
 }
 
 const props = defineProps<{
-    data: PagedResult<any>;
+    data: PagedResult<T>;
     columns: TableColumn[];
     filters: TableFilter;
     sort: TableSort;
     pagination: TablePagination;
+}>();
+
+const emit = defineEmits<{
+    (e: "update:filters", value: TableFilter): void;
+    (e: "update:sort", value: TableSort): void;
+    (e: "update:page", value: number): void;
+    (e: "update:size", value: number): void;
 }>();
 
 const localFilters = ref({ ...props.filters });
@@ -97,7 +103,7 @@ const sizeVariants = [5, 10, 15];
 
 watch(
     () => localFilters.value,
-    debounce((val) => emit("update:filters", val), 600),
+    debounce((val) => emit("update:filters", val), 300),
     { deep: true }
 );
 
@@ -112,13 +118,6 @@ function getRowAlignment(row?: "left" | "center" | "right") {
     else if (row == "center") return "flex justify-center";
     else return "flex justify-end";
 }
-
-const emit = defineEmits<{
-    (e: "update:filters", value: TableFilter): void;
-    (e: "update:sort", value: TableSort): void;
-    (e: "update:page", value: number): void;
-    (e: "update:size", value: number): void;
-}>();
 
 const switchSize = (size: number) => {
     emit("update:size", size);

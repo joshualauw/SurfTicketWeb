@@ -15,14 +15,13 @@
             @update:filters="handleFilter"
         >
             <template #cell-actions="{ item }">
-                <Button variant="ghost" size="sm" class="border mr-2">
-                    <EditIcon />
-                    Edit
-                </Button>
-                <Button variant="destructive" size="sm">
-                    <Trash2Icon />
-                    Delete
-                </Button>
+                <NuxtLink :to="{ name: RouteKey.ADMIN_VENUE_DETAIL, query: route.query, params: { id: item.id } }">
+                    <Button variant="ghost" size="sm" class="mr-2">
+                        <EyeIcon />
+                        <span class="hidden md:block">View</span>
+                    </Button>
+                </NuxtLink>
+                <AdminVenueDelete @done="handleDoneDelete" :merchant-id="merchantId" :venue-id="item.id" />
             </template>
         </SurfTable>
     </div>
@@ -30,7 +29,7 @@
 
 <script setup lang="ts">
 import type { TableColumn, TableFilter, TablePagination, TableSort } from "~/types/common/table";
-import { EditIcon, Loader2Icon, ServerOffIcon, Trash2Icon } from "lucide-vue-next";
+import { EyeIcon, Loader2Icon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
 
 definePageMeta({
@@ -43,25 +42,39 @@ definePageMeta({
 
 const route = useRoute();
 const { event, clearEvent } = useAdminModuleHandler();
-const { getMerchantId } = useMerchantUserStore();
+const merchantId = computed(() => (route.query.id ? parseInt(route.query.id as string) : 0));
 
 const columns: TableColumn[] = [
-    { key: "id", label: "Id", headerClass: "w-20", align: "center", sortable: true },
     { key: "name", label: "Name", sortable: true, filterable: true },
-    { key: "actions", label: "Actions", headerClass: "w-36", align: "center" },
+    { key: "actions", label: "Actions", headerClass: "w-16 md:w-36", align: "center" },
 ];
 
 const sort = reactive<TableSort>({ key: null, direction: null });
-const pagination = reactive<TablePagination>({ page: 1, size: 5 });
+const pagination = reactive<TablePagination>({ page: 1, size: 10 });
 const filters = reactive<TableFilter>(
     Object.assign({}, ...columns.filter((c) => c.filterable).map((v) => ({ [v.key]: "" })))
 );
+
 const loading = ref(false);
 
 const { getAdminVenues } = useVenueApi();
-const { data, refresh } = await useAsyncData(() => getAdminVenues(getMerchantId(), pagination, sort, filters), {
+const { data, refresh } = await useAsyncData(() => getAdminVenues(merchantId.value, pagination, sort, filters), {
     watch: [pagination, sort, filters],
 });
+
+const adminVenues = computed(() => ({
+    items: data.value?.data?.items ?? [],
+    page: data.value?.data?.page ?? 1,
+    size: data.value?.data?.size ?? 15,
+    totalItems: data.value?.data?.totalItems ?? 0,
+    totalPages: data.value?.data?.totalPages ?? 0,
+}));
+
+async function handleDoneDelete(success: boolean) {
+    if (success) {
+        await refresh();
+    }
+}
 
 function handlePage(value: number) {
     pagination.page = value;
@@ -69,6 +82,7 @@ function handlePage(value: number) {
 
 function handleSize(value: number) {
     pagination.size = value;
+    pagination.page = 1;
 }
 
 function handleSort(value: TableSort) {
@@ -83,14 +97,6 @@ function handleFilter(value: TableFilter) {
     }
     pagination.page = 1;
 }
-
-const adminVenues = computed(() => ({
-    items: data.value?.data?.items ?? [],
-    page: data.value?.data?.page ?? 1,
-    size: data.value?.data?.size ?? 15,
-    totalItems: data.value?.data?.totalItems ?? 0,
-    totalPages: data.value?.data?.totalPages ?? 0,
-}));
 
 watch(event, async (val) => {
     if (val == "create") {

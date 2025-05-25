@@ -1,6 +1,8 @@
 <template>
     <div class="w-full border-b border-gray-300 py-2 px-2 flex items-center justify-between">
-        <div><SidebarTrigger /></div>
+        <div>
+            <SidebarTrigger />
+        </div>
         <div class="flex items-center">
             <DropdownMenu>
                 <DropdownMenuTrigger as-child class="relative">
@@ -67,4 +69,6 @@
 <script setup lang="ts">
 import { ArrowRightIcon, BellIcon, LogOutIcon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
+
+const { merchantUser } = useMerchantUserStore();
 </script>

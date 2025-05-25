@@ -21,7 +21,7 @@
                         <FormMessage />
                     </FormItem>
                 </FormField>
-                <Button :loading="loading" type="submit" class="block mx-auto w-24">Create</Button>
+                <Button :loading="loading" type="submit" class="block mx-auto w-24">Save</Button>
             </form>
         </CardContent>
     </Card>
@@ -41,8 +41,6 @@ definePageMeta({
     name: RouteKey.ADMIN_VENUE_CREATE,
 });
 
-const { getMerchantId } = useMerchantUserStore();
-
 const formSchema = toTypedSchema(
     z.object({
         name: z.string(),
@@ -55,11 +53,13 @@ const { handleSubmit } = useForm({
 });
 
 const route = useRoute();
+const merchantId = computed(() => (route.query.id ? parseInt(route.query.id as string) : 0));
+
 const { createVenue } = useVenueApi();
 const { loading, execute, success, message } = useApi(createVenue);
 
 const onSubmit = handleSubmit(async (values) => {
-    await execute(getMerchantId(), values);
+    await execute(merchantId.value, values);
 
     if (success.value) {
         toast.success(message.value, { class: "toast-success" });

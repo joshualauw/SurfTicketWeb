@@ -2,6 +2,7 @@ export enum RouteKey {
     ADMIN_DASHBOARD = "admin-dashboard",
     ADMIN_VENUE = "admin-venue",
     ADMIN_VENUE_CREATE = "admin-venue-create",
+    ADMIN_VENUE_DETAIL = "admin-venue-detail",
     ADMIN_TICKET = "admin-ticket",
     ADMIN_REVENUE = "admin-revenue",
     ADMIN_SCAN = "admin-scan",
