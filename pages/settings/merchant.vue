@@ -1,5 +1,5 @@
 <template>
-    <div v-if="merchants && merchants.data" class="px-6 lg:px-14 pt-8 overflow-y-auto space-y-8">
+    <div v-if="merchants && merchants.data" class="px-4 lg:px-14 pt-8 overflow-y-auto space-y-8">
         <div
             v-if="merchants.data.collaboratedMerchants.length == 0 && merchants.data.ownedMerchants.length == 0"
             class="w-full h-full flex-center flex-col space-y-4 mt-14 lg:mt-28"

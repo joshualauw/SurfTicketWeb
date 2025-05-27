@@ -12,9 +12,9 @@
             </div>
         </div>
         <NuxtLink :to="{ name: RouteKey.ADMIN_DASHBOARD, query: { id } }">
-            <Button variant="ghost" class="border hidden sm:flex">
+            <Button variant="ghost" class="border">
                 <LogInIcon class="mr-1" />
-                Enter
+                <span class="hidden sm:flex">Enter</span>
             </Button>
         </NuxtLink>
     </div>

@@ -1,6 +1,6 @@
 <template>
     <ClientOnly>
-        <Dialog v-model:open="isOpen">
+        <Dialog>
             <DialogTrigger>
                 <Button variant="destructive" size="sm">
                     <Trash2Icon />
@@ -8,20 +8,20 @@
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Delete Confirmation</DialogTitle>
-                </DialogHeader>
+                <VisuallyHidden asChild>
+                    <DialogHeader>
+                        <DialogTitle>Delete Confirmation</DialogTitle>
+                    </DialogHeader>
+                </VisuallyHidden>
                 <div class="my-4 flex-center flex-col text-destructive">
-                    <CircleXIcon class="w-24 h-24 mb-2" />
+                    <CircleXIcon class="w-20 h-20 mb-2" />
                     Deleted item cannot be recovered. Are you sure?
                 </div>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button @click="emit('done', false)" variant="ghost" type="button">Cancel</Button>
                     </DialogClose>
-                    <Button @click="doDeleteVenue" variant="destructive" :loading="loading" :disabled="timer > 0">
-                        <span v-if="timer > 0" class="mr-1">{{ timer }}</span> Delete Forever
-                    </Button>
+                    <Button @click="doDeleteVenue" variant="destructive" :loading="loading">Delete Forever</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { CircleXIcon, Trash2Icon } from "lucide-vue-next";
+import { VisuallyHidden } from "reka-ui";
 import { toast } from "vue-sonner";
 
 const props = defineProps<{
@@ -40,18 +41,6 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: "done", success: boolean): void;
 }>();
-
-const timer = ref(3);
-const isOpen = ref(false);
-
-watch(isOpen, (val) => {
-    if (val) {
-        const interval = setInterval(() => {
-            timer.value--;
-            if (timer.value == 0) clearInterval(interval);
-        }, 1000);
-    }
-});
 
 const { deleteVenue } = useVenueApi();
 const { success, loading, execute, message } = useApi(deleteVenue);

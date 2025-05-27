@@ -18,7 +18,13 @@
                     <p class="font-semibold mb-2">Description</p>
                     <p>{{ adminVenue.description }}</p>
                 </div>
-                <Button @click="isEdit = true" variant="ghost" type="button" class="flex mx-auto w-24">
+                <Button
+                    v-if="hasPermission('VENUE', 'UPDATE')"
+                    @click="isEdit = true"
+                    variant="ghost"
+                    type="button"
+                    class="flex mx-auto w-24"
+                >
                     <EditIcon />
                     Edit
                 </Button>
@@ -30,16 +36,18 @@
 <script setup lang="ts">
 import { EditIcon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
+import type { PermissionCode } from "~/types/atoms/PermissionCode";
 
 definePageMeta({
     middleware: ["auth", "admin"],
     layout: "admin",
     title: "Venue Detail",
+    permission: "VENUE" as PermissionCode,
     name: RouteKey.ADMIN_VENUE_DETAIL,
 });
 
 const route = useRoute();
-
+const { hasPermission } = useMerchantUserStore();
 const isEdit = ref(false);
 const merchantId = computed(() => (route.query.id ? parseInt(route.query.id as string) : 0));
 const venueId = computed(() => (route.params.id ? parseInt(route.params.id as string) : 0));

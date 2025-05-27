@@ -28,20 +28,6 @@
                                 </BreadcrumbList>
                             </Breadcrumb>
                         </div>
-                        <div v-if="modules.length > 0" class="border rounded-md">
-                            <Button v-if="modules.includes('create')" @click="emitEvent('create')" variant="ghost">
-                                <CirclePlusIcon />
-                                <span class="hidden md:block">Create</span>
-                            </Button>
-                            <Button v-if="modules.includes('refresh')" @click="emitEvent('refresh')" variant="ghost">
-                                <RefreshCwIcon />
-                                <span class="hidden md:block">Refresh</span>
-                            </Button>
-                            <Button v-if="modules.includes('export')" @click="emitEvent('export')" variant="ghost">
-                                <FileDownIcon />
-                                <span class="hidden md:block">Export</span>
-                            </Button>
-                        </div>
                     </div>
                     <div class="flex-1 flex flex-col">
                         <slot />
@@ -54,12 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import { CirclePlusIcon, FileDownIcon, RefreshCwIcon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
 
 const route = useRoute();
-const { emitEvent } = useAdminModuleHandler();
-const modules = computed(() => (route.meta.modules as string[]) ?? []);
+
 const breadcrumbs = computed(() => generateBreadcrumbs(route.path));
 
 function generateBreadcrumbs(url: string, skipStart = 1, skipEnd = 1): { path: string; name: string }[] {

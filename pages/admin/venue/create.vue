@@ -33,11 +33,15 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { toast } from "vue-sonner";
 import * as z from "zod";
+import type { PermissionCode } from "~/types/atoms/PermissionCode";
+import type { PermissionAccess } from "~/types/atoms/PermissionAccess";
 
 definePageMeta({
     middleware: ["auth", "admin"],
     layout: "admin",
     title: "Create Venue",
+    permission: "VENUE" as PermissionCode,
+    access: "INSERT" as PermissionAccess,
     name: RouteKey.ADMIN_VENUE_CREATE,
 });
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="px-6 lg:px-14 pt-8 overflow-y-auto space-y-8">
+    <div class="px-4 lg:px-14 pt-8 overflow-y-auto space-y-8">
         <ClientSettingAccountProfile v-if="profile && profile.data" :data="profile.data" />
         <ClientSettingAccountNotification />
         <ClientSettingAccountPassword />

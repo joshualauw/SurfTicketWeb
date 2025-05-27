@@ -1,5 +1,5 @@
 <template>
-    <div class="px-6 lg:px-14 pt-8 overflow-y-auto space-y-8">
+    <div class="px-4 lg:px-14 pt-8 overflow-y-auto space-y-8">
         <div id="package" class="flex flex-col">
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 <div v-for="pricing in pricings" class="border rounded-sm p-8 space-y-8">
