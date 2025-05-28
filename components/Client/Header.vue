@@ -41,12 +41,12 @@
             </DropdownMenu>
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
-                    <Button variant="none">
+                    <Button v-if="loggedUser" variant="none">
                         <Avatar>
                             <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>{{ loggedUser.username.substring(0, 1).toUpperCase() }}</AvatarFallback>
                         </Avatar>
-                        <p class="text-sm hidden md:block">joshualauw1@gmail.com</p>
+                        <p class="text-sm hidden md:block">{{ loggedUser.email }}</p>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-24 md:w-48">
@@ -95,10 +95,12 @@ const CLIENT_DROPDOWN = [
 ];
 
 const { logout } = useAuthApi();
+const { setLoggedUser, loggedUser } = useAuthStore();
 
 async function doLogout() {
     try {
         await logout();
+        setLoggedUser(null);
         toast.success("logout successful", { class: "toast-success" });
 
         await nextTick();

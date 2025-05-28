@@ -5,7 +5,7 @@ import type { GetMerchantUserResponse } from "~/types/api/merchantUser/GetMercha
 export default function () {
     function getMerchantUser(merchantId: number) {
         const fetch = useRequestFetch();
-        return fetch<ApiResponse<GetMerchantUserResponse>>(`merchant-user/${merchantId}`, {
+        return fetch<ApiResponse<GetMerchantUserResponse>>(`merchant/${merchantId}/user`, {
             method: "GET",
             baseURL: ENTRY_URL,
         });

@@ -40,12 +40,12 @@
             </DropdownMenu>
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
-                    <Button variant="ghost">
+                    <Button v-if="loggedUser" variant="ghost">
                         <Avatar>
                             <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>{{ loggedUser.username.substring(0, 1).toUpperCase() }}</AvatarFallback>
                         </Avatar>
-                        <p class="text-sm text-gray-700 hidden md:block">joshualauw1@gmail.com</p>
+                        <p class="text-sm text-gray-700 hidden md:block">{{ loggedUser.email }}</p>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-24 md:w-48">
@@ -70,5 +70,5 @@
 import { ArrowRightIcon, BellIcon, LogOutIcon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
 
-const { merchantUser } = useMerchantUserStore();
+const { loggedUser } = useAuthStore();
 </script>
