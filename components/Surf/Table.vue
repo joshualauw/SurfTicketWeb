@@ -1,47 +1,58 @@
 <template>
     <div class="text-sm">
-        <table class="w-full table-auto border-collapse border-2">
-            <thead>
-                <tr>
-                    <th class="border cursor-pointer select-none py-2 px-4 bg-sky-50 w-6 text-center">Row</th>
-                    <th
-                        v-for="col in columns"
-                        :key="col.key"
-                        class="border cursor-pointer select-none py-2 px-4 bg-sky-50"
-                        :class="[col.headerClass, getHeaderAlignment(col.align)]"
-                        @click="col.sortable && toggleSort(col.key)"
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-fixed border-collapse border-2">
+                <thead>
+                    <tr>
+                        <th class="border cursor-pointer select-none py-2 px-4 bg-sky-50 w-6 text-center">Row</th>
+                        <th
+                            v-for="col in columns"
+                            :key="col.key"
+                            class="border cursor-pointer select-none py-2 px-4 bg-sky-50"
+                            :class="[col.rowClass, getHeaderAlignment(col.align)]"
+                            @click="col.sortable && toggleSort(col.key)"
+                        >
+                            {{ col.label }}
+                            <span v-if="sort.key === col.key" class="ml-1 text-xs">
+                                {{ sort.direction === "asc" ? "▲" : sort.direction === "desc" ? "▼" : "" }}
+                            </span>
+                        </th>
+                    </tr>
+                    <tr v-if="columns.some((c) => c.filterable)">
+                        <th class="border p-1 bg-white"></th>
+                        <th v-for="col in columns" :key="col.key" class="border p-1 bg-white">
+                            <Input
+                                v-if="col.filterable"
+                                v-model="localFilters[col.key]"
+                                placeholder="Filter..."
+                                class="w-full border rounded h-8"
+                            />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="data.items.length === 0">
+                        <td :colspan="columns.length + 1" class="text-center py-2 text-gray-600">
+                            -No data available-
+                        </td>
+                    </tr>
+                    <tr
+                        v-for="(item, i) in data.items"
+                        :key="item.id || i"
+                        class="bg-white hover:bg-zinc-50 transition"
                     >
-                        {{ col.label }}
-                        <span v-if="sort.key === col.key" class="ml-1 text-xs">
-                            {{ sort.direction === "asc" ? "▲" : sort.direction === "desc" ? "▼" : "" }}
-                        </span>
-                    </th>
-                </tr>
-                <tr v-if="columns.some((c) => c.filterable)">
-                    <th class="border p-1 bg-white"></th>
-                    <th v-for="col in columns" :key="col.key" class="border p-1 bg-white">
-                        <Input
-                            v-if="col.filterable"
-                            v-model="localFilters[col.key]"
-                            placeholder="Filter..."
-                            class="w-full border rounded h-8"
-                        />
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, i) in data.items" :key="item.id || i" class="bg-white hover:bg-zinc-50 transition">
-                    <td class="border py-2 px-4 text-center">{{ i + (data.page - 1) * data.size + 1 }}</td>
-                    <td v-for="col in columns" :key="col.key" class="border py-2 px-4">
-                        <div :class="[col.rowClass, getRowAlignment(col.align)]">
-                            <slot :name="`cell-${col.key}`" :value="item[col.key]" :item="item">
-                                {{ item[col.key] }}
-                            </slot>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <td class="border py-2 px-4 text-center">{{ i + (data.page - 1) * data.size + 1 }}</td>
+                        <td v-for="col in columns" :key="col.key" class="border py-2 px-4">
+                            <div :class="[col.rowClass, getRowAlignment(col.align)]">
+                                <slot :name="`cell-${col.key}`" :value="item[col.key]" :item="item">
+                                    {{ item[col.key] }}
+                                </slot>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="pagination flex justify-between items-center gap-2 mt-3">
             <div class="border">
                 <Button

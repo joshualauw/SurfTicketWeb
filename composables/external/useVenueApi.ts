@@ -60,7 +60,7 @@ export default function () {
 
     function deleteVenue(merchantId: number, venueId: number) {
         const fetch = useRequestFetch();
-        return fetch<ApiResponse<UpdateVenueRequest>>(`venue/admin/${merchantId}/${venueId}`, {
+        return fetch<ApiResponse<any>>(`venue/admin/${merchantId}/${venueId}`, {
             method: "DELETE",
             baseURL: ENTRY_URL,
         });

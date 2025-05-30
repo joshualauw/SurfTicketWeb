@@ -25,6 +25,9 @@
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </template>
+            <template #cell-updatedAt="{ item }">
+                {{ dayjs(item.updatedAt).format("DD MMM YYYY HH:mm") }}
+            </template>
             <template #cell-actions="{ item }">
                 <NuxtLink :to="{ name: RouteKey.ADMIN_VENUE_DETAIL, query: route.query, params: { id: item.id } }">
                     <Button variant="ghost" size="sm" class="mr-2">
@@ -44,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from "dayjs";
 import type { TableColumn, TableFilter, TablePagination, TableSort } from "~/types/common/table";
 import { EyeIcon, Loader2Icon } from "lucide-vue-next";
 import { RouteKey } from "~/const/route";
@@ -62,9 +66,10 @@ const { hasPermission } = useMerchantUserStore();
 const merchantId = computed(() => (route.query.id ? parseInt(route.query.id as string) : 0));
 
 const columns: TableColumn[] = [
-    { key: "logoUrl", label: "Logo", headerClass: "w-0" },
-    { key: "name", label: "Name", sortable: true, filterable: true },
-    { key: "actions", label: "Actions", headerClass: "w-16 md:w-36", align: "center" },
+    { key: "logoUrl", label: "Logo", align: "center", rowClass: "w-[100px]" },
+    { key: "name", label: "Name", sortable: true, filterable: true, rowClass: "min-w-[250px]" },
+    { key: "updatedAt", label: "Last Updated At", sortable: true, align: "center", rowClass: "w-[200px]" },
+    { key: "actions", label: "Actions", align: "center", rowClass: "w-[175px]" },
 ];
 
 const sort = reactive<TableSort>({ key: null, direction: null });

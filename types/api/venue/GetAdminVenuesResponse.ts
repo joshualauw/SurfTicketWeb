@@ -6,4 +6,5 @@ export interface AdminVenueItem {
     id: number;
     name: string;
     logoUrl?: string;
+    updatedAt: string;
 }
