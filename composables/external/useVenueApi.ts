@@ -4,6 +4,8 @@ import type { CreateVenueRequest } from "~/types/api/venue/CreateVenueRequest";
 import type { CreateVenueResponse } from "~/types/api/venue/CreateVenueResponse";
 import type { GetAdminVenueResponse } from "~/types/api/venue/GetAdminVenueResponse";
 import type { GetAdminVenuesResponse } from "~/types/api/venue/GetAdminVenuesResponse";
+import type { UpdateVenueLogoRequest } from "~/types/api/venue/UpdateVenueLogoRequest";
+import type { UpdateVenueLogoResponse } from "~/types/api/venue/UpdateVenueLogoResponse";
 import type { UpdateVenueRequest } from "~/types/api/venue/UpdateVenueRequest";
 import type { TableFilter, TableSort, TablePagination } from "~/types/common/table";
 
@@ -44,6 +46,18 @@ export default function () {
         });
     }
 
+    function updateVenueLogo(merchantId: number, venueId: number, payload: UpdateVenueLogoRequest) {
+        const formData = new FormData();
+        formData.append("logo", payload.logo);
+
+        const fetch = useRequestFetch();
+        return fetch<ApiResponse<UpdateVenueLogoResponse>>(`venue/admin/${merchantId}/${venueId}/upload`, {
+            method: "POST",
+            body: formData,
+            baseURL: ENTRY_URL,
+        });
+    }
+
     function deleteVenue(merchantId: number, venueId: number) {
         const fetch = useRequestFetch();
         return fetch<ApiResponse<UpdateVenueRequest>>(`venue/admin/${merchantId}/${venueId}`, {
@@ -52,5 +66,5 @@ export default function () {
         });
     }
 
-    return { getAdminVenues, getAdminVenue, createVenue, updateVenue, deleteVenue };
+    return { getAdminVenues, getAdminVenue, createVenue, updateVenue, updateVenueLogo, deleteVenue };
 }

@@ -19,6 +19,12 @@
             @update:sort="handleSort"
             @update:filters="handleFilter"
         >
+            <template #cell-logoUrl="{ item }">
+                <Avatar class="w-10 h-10 md:w-16 md:h-16">
+                    <AvatarImage :src="item.logoUrl ?? '/images/logo.png'" alt="@unovue" />
+                    <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+            </template>
             <template #cell-actions="{ item }">
                 <NuxtLink :to="{ name: RouteKey.ADMIN_VENUE_DETAIL, query: route.query, params: { id: item.id } }">
                     <Button variant="ghost" size="sm" class="mr-2">
@@ -56,6 +62,7 @@ const { hasPermission } = useMerchantUserStore();
 const merchantId = computed(() => (route.query.id ? parseInt(route.query.id as string) : 0));
 
 const columns: TableColumn[] = [
+    { key: "logoUrl", label: "Logo", headerClass: "w-0" },
     { key: "name", label: "Name", sortable: true, filterable: true },
     { key: "actions", label: "Actions", headerClass: "w-16 md:w-36", align: "center" },
 ];
