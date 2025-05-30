@@ -16,15 +16,14 @@ export default function () {
             return true;
         }
 
-        if (merchantUser.value.permissions.map((p) => p.code).includes(permission)) {
-            if (access) {
-                return merchantUser.value.permissions.map((p) => p.access).includes(access);
-            } else {
-                return true;
-            }
-        } else {
-            return false;
+        const perm = merchantUser.value.permissions.find((p) => p.code == permission);
+        if (!perm) return false;
+
+        if (access) {
+            return perm.access == access;
         }
+
+        return true;
     }
 
     return { merchantUser, setMerchantUser, hasPermission };

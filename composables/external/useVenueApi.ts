@@ -39,7 +39,7 @@ export default function () {
 
     function updateVenue(merchantId: number, venueId: number, payload: UpdateVenueRequest) {
         const fetch = useRequestFetch();
-        return fetch<ApiResponse<UpdateVenueRequest>>(`venue/admin/${merchantId}/${venueId}`, {
+        return fetch<ApiResponse<null>>(`venue/admin/${merchantId}/${venueId}`, {
             method: "PUT",
             body: payload,
             baseURL: ENTRY_URL,
