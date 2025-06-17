@@ -1,7 +1,6 @@
 # SurfTicket
 
-SurfTicket is a platform where users can add Buy/Sell Tickets for long running Venues
-Like Amusement Park, Museum, or Theater
+SurfTicket is a platform where users can add Buy/Sell Tickets for long running Venues Like Amusement Park. Built using Nuxt 3
 
 This Project is Still WIP!
 
